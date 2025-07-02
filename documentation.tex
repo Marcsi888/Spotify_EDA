@@ -1,0 +1,408 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% Page setup
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Spotify Data Analysis Project}
+\lhead{Maria Nyolcas}
+\rfoot{\thepage}
+
+% Code listing setup
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    backgroundcolor=\color{gray!10}
+}
+
+% Title formatting
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge\bfseries Spotify Data Analysis Project\par}
+    \vspace{1cm}
+    
+    {\Large Comprehensive Analysis of Music Trends and Audio Features\par}
+    \vspace{2cm}
+    
+    {\large\textbf{Author:} Maria Nyolcas\par}
+    \vspace{1cm}
+    
+    {\large\textbf{Date:} \today\par}
+    \vspace{2cm}
+    
+    \begin{abstract}
+        This project presents a comprehensive analysis of Spotify music data, combining multiple data sources including CSV datasets and real-time API data. The analysis covers exploratory data analysis (EDA), data extraction and transformation (ETL), machine learning applications, and interactive visualizations. The project demonstrates proficiency in data science methodologies, API integration, and statistical analysis techniques applied to music industry data.
+    \end{abstract}
+    
+    \vfill
+    {\large Integrative Projects Utilizing Data Analysis and ML\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+\subsection{Project Overview}
+This comprehensive data analysis project focuses on Spotify music data, exploring various aspects of music trends, audio features, and popularity metrics. The project integrates multiple data sources and analysis techniques to provide insights into the music industry.
+
+\subsection{Objectives}
+The primary objectives of this project include:
+\begin{itemize}
+    \item Perform comprehensive exploratory data analysis on Spotify music data
+    \item Extract, transform, and load (ETL) data from multiple sources
+    \item Integrate Spotify API for real-time data collection
+    \item Analyze audio features and their relationship with popularity
+    \item Apply machine learning techniques for predictive modeling
+    \item Create interactive visualizations and dashboards
+    \item Investigate music trends and artist performance metrics
+\end{itemize}
+
+\subsection{Data Sources}
+The project utilizes multiple data sources:
+\begin{itemize}
+    \item \textbf{Spotify CSV Dataset}: Historical music data with streaming metrics
+    \item \textbf{Spotify API}: Real-time access to current music data and audio features
+    \item \textbf{Wikipedia API}: Additional artist information and metadata
+    \item \textbf{PowerBI Integration}: Interactive dashboard creation
+\end{itemize}
+
+\section{Methodology}
+
+\subsection{Data Collection}
+\subsubsection{CSV Data Processing}
+The project begins with processing historical Spotify data stored in CSV format, containing information about:
+\begin{itemize}
+    \item Track metadata (title, artist, release date)
+    \item Streaming metrics (playlist appearances, chart positions)
+    \item Audio features (BPM, key, mode)
+    \item Popularity indicators
+\end{itemize}
+
+\subsubsection{API Integration}
+Real-time data collection through Spotify API includes:
+\begin{itemize}
+    \item Authentication and token management
+    \item Playlist data extraction
+    \item Audio features retrieval
+    \item Artist information gathering
+\end{itemize}
+
+\subsection{Data Processing Pipeline}
+\subsubsection{ETL Process}
+The Extract, Transform, Load (ETL) process involves:
+\begin{enumerate}
+    \item \textbf{Extract}: Data extraction from CSV files and API endpoints
+    \item \textbf{Transform}: Data cleaning, feature engineering, and enrichment
+    \item \textbf{Load}: Structured data storage for analysis
+\end{enumerate}
+
+\subsubsection{Data Enrichment}
+Additional data enrichment includes:
+\begin{itemize}
+    \item Genre classification and assignment
+    \item Popularity categorization
+    \item Temporal analysis (seasonal trends, release timing)
+    \item Artist collaboration analysis
+\end{itemize}
+
+\section{Technical Implementation}
+
+\subsection{Technologies Used}
+\begin{itemize}
+    \item \textbf{Python}: Primary programming language
+    \item \textbf{Pandas}: Data manipulation and analysis
+    \item \textbf{NumPy}: Numerical computations
+    \item \textbf{Matplotlib/Seaborn}: Data visualization
+    \item \textbf{Scikit-learn}: Machine learning algorithms
+    \item \textbf{Requests}: API integration
+    \item \textbf{BeautifulSoup}: Web scraping
+    \item \textbf{PowerBI}: Interactive dashboards
+\end{itemize}
+
+\subsection{Key Libraries and Dependencies}
+\begin{lstlisting}[language=Python]
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import requests
+from scipy.stats import ttest_ind, pearsonr
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+import base64
+import time
+import json
+\end{lstlisting}
+
+\section{Analysis Components}
+
+\subsection{Exploratory Data Analysis (EDA)}
+\subsubsection{Data Overview}
+Initial exploration includes:
+\begin{itemize}
+    \item Dataset structure and dimensions
+    \item Data types and missing values
+    \item Statistical summaries
+    \item Distribution analysis
+\end{itemize}
+
+\subsubsection{Correlation Analysis}
+Key correlation studies include:
+\begin{itemize}
+    \item Streams vs. playlist appearances
+    \item Audio features relationships
+    \item Popularity metrics correlations
+    \item Temporal trend analysis
+\end{itemize}
+
+\subsection{Statistical Analysis}
+\subsubsection{Hypothesis Testing}
+Various statistical tests performed:
+\begin{itemize}
+    \item T-tests for group comparisons
+    \item Pearson correlation analysis
+    \item Chi-square tests for categorical variables
+    \item ANOVA for multiple group comparisons
+\end{itemize}
+
+\subsubsection{Regression Analysis}
+Linear regression models for:
+\begin{itemize}
+    \item Predicting popularity based on audio features
+    \item Stream count prediction
+    \item Playlist inclusion probability
+\end{itemize}
+
+\subsection{Machine Learning Applications}
+\subsubsection{Predictive Modeling}
+Machine learning models developed for:
+\begin{itemize}
+    \item Popularity prediction
+    \item Genre classification
+    \item Hit song identification
+    \item Artist success forecasting
+\end{itemize}
+
+\subsubsection{Feature Engineering}
+Advanced feature creation including:
+\begin{itemize}
+    \item Audio feature combinations
+    \item Temporal features
+    \item Artist-specific metrics
+    \item Market trend indicators
+\end{itemize}
+
+\section{Results and Findings}
+
+\subsection{Key Insights}
+\subsubsection{Popularity Factors}
+Analysis reveals several key factors influencing song popularity:
+\begin{itemize}
+    \item Strong correlation between playlist appearances and streaming numbers
+    \item Audio features like danceability and energy impact popularity
+    \item Release timing affects initial performance
+    \item Artist collaboration enhances reach
+\end{itemize}
+
+\subsubsection{Temporal Trends}
+Seasonal and temporal patterns identified:
+\begin{itemize}
+    \item Peak streaming periods during specific seasons
+    \item Weekly patterns in music consumption
+    \item Long-term trend analysis
+    \item Genre popularity evolution
+\end{itemize}
+
+\subsection{Visualization Results}
+\subsubsection{Interactive Dashboards}
+PowerBI dashboards created for:
+\begin{itemize}
+    \item Real-time streaming metrics
+    \item Genre distribution analysis
+    \item Artist performance tracking
+    \item Trend visualization
+\end{itemize}
+
+\subsubsection{Statistical Plots}
+Various visualization types implemented:
+\begin{itemize}
+    \item Correlation heatmaps
+    \item Distribution histograms
+    \item Time series plots
+    \item Scatter plots with regression lines
+\end{itemize}
+
+\section{API Integration Details}
+
+\subsection{Spotify API Implementation}
+\subsubsection{Authentication Process}
+\begin{lstlisting}[language=Python]
+def get_spotify_token(client_id, client_secret):
+    token_url = 'https://accounts.spotify.com/api/token'
+    auth_string = f"{client_id}:{client_secret}"
+    auth_bytes = auth_string.encode('ascii')
+    auth_b64 = base64.b64encode(auth_bytes).decode('ascii')
+    
+    headers = {
+        'Authorization': f'Basic {auth_b64}',
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    
+    data = {'grant_type': 'client_credentials'}
+    response = requests.post(token_url, headers=headers, data=data)
+    return response.json()['access_token']
+\end{lstlisting}
+
+\subsubsection{Data Retrieval Functions}
+Key API functions include:
+\begin{itemize}
+    \item Playlist track extraction
+    \item Audio features retrieval
+    \item Artist information gathering
+    \item Search functionality
+\end{itemize}
+
+\subsection{Data Enrichment Process}
+\subsubsection{Feature Extraction}
+Additional features extracted include:
+\begin{itemize}
+    \item Audio characteristics (danceability, energy, valence)
+    \item Market metrics (popularity scores)
+    \item Temporal features (release timing)
+    \item Social indicators (playlist inclusion)
+\end{itemize}
+
+\section{Project Structure}
+
+\subsection{File Organization}
+The project consists of several key components:
+\begin{itemize}
+    \item \textbf{Spotify\_EDA\_Part1\_Student.ipynb}: Initial exploratory analysis
+    \item \textbf{Spotify2023\_Part1\_ETL\_Maria\_Nyolcas.ipynb}: Data extraction and transformation
+    \item \textbf{Spotify\_API\_Data\_Analysis\_Final\_Project\_Maria\_Nyolcas.ipynb}: Comprehensive final analysis
+    \item \textbf{SpotifyAPI-Student\_Maria.ipynb}: API integration examples
+    \item \textbf{spotify\_liked\_songs\_api\_share.ipynb}: Personal music analysis
+    \item \textbf{Spotify EDA with PowerBI\_Midterm\_maria.pbix}: Interactive dashboard
+    \item \textbf{Spotify\_Data\_Analysis\_Presentation.pptx}: Presentation materials
+\end{itemize}
+
+\subsection{Workflow}
+The project follows a structured workflow:
+\begin{enumerate}
+    \item Data collection and preprocessing
+    \item Exploratory data analysis
+    \item Feature engineering and enrichment
+    \item Statistical analysis and modeling
+    \item Visualization and dashboard creation
+    \item Results interpretation and presentation
+\end{enumerate}
+
+\section{Conclusions}
+
+\subsection{Project Achievements}
+This comprehensive analysis successfully demonstrates:
+\begin{itemize}
+    \item Proficiency in data science methodologies
+    \item Advanced API integration capabilities
+    \item Statistical analysis and machine learning skills
+    \item Data visualization and presentation abilities
+    \item Real-world problem-solving approaches
+\end{itemize}
+
+\subsection{Key Contributions}
+The project contributes to understanding:
+\begin{itemize}
+    \item Music industry trends and patterns
+    \item Factors influencing song popularity
+    \item Audio feature relationships
+    \item Market dynamics in streaming platforms
+\end{itemize}
+
+\subsection{Future Directions}
+Potential areas for future development:
+\begin{itemize}
+    \item Real-time streaming analysis
+    \item Advanced machine learning models
+    \item Cross-platform data integration
+    \item Predictive analytics for music industry
+\end{itemize}
+
+\section{Technical Appendix}
+
+\subsection{Data Dictionary}
+Key variables and their definitions:
+\begin{itemize}
+    \item \textbf{streams}: Number of times a track was streamed
+    \item \textbf{in\_spotify\_playlists}: Number of playlists containing the track
+    \item \textbf{in\_spotify\_charts}: Chart position indicators
+    \item \textbf{danceability}: Measure of how suitable a track is for dancing
+    \item \textbf{energy}: Perceptual measure of intensity and activity
+    \item \textbf{valence}: Musical positiveness conveyed by a track
+\end{itemize}
+
+\subsection{Statistical Methods}
+Detailed statistical approaches used:
+\begin{itemize}
+    \item Descriptive statistics and data profiling
+    \item Correlation analysis and hypothesis testing
+    \item Regression modeling and prediction
+    \item Time series analysis and trend detection
+\end{itemize}
+
+\section{References}
+
+\begin{thebibliography}{9}
+\bibitem{spotify_api}
+Spotify Web API Documentation,
+\url{https://developer.spotify.com/documentation/web-api/}
+
+\bibitem{pandas}
+McKinney, W. (2010). Data Structures for Statistical Computing in Python.
+
+\bibitem{matplotlib}
+Hunter, J. D. (2007). Matplotlib: A 2D Graphics Environment.
+
+\bibitem{seaborn}
+Waskom, M. L. (2021). Seaborn: Statistical Data Visualization.
+
+\bibitem{scikit}
+Pedregosa, F., et al. (2011). Scikit-learn: Machine Learning in Python.
+
+\bibitem{requests}
+Requests: HTTP for Humans,
+\url{https://requests.readthedocs.io/}
+\end{thebibliography}
+
+\end{document} 
