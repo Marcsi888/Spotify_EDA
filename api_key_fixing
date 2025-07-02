@@ -1,0 +1,93 @@
+"""
+Generic script to replace exposed API keys, secrets, and tokens in Jupyter notebooks with secure environment variable loading.
+"""
+
+import re
+import os
+
+# Patterns for common credential variable names
+CRED_PATTERNS = [
+    r'(\b[A-Za-z0-9_]*_?API_KEY\b)',
+    r'(\b[A-Za-z0-9_]*_?CLIENT_ID\b)',
+    r'(\b[A-Za-z0-9_]*_?CLIENT_SECRET\b)',
+    r'(\b[A-Za-z0-9_]*_?SECRET\b)',
+    r'(\b[A-Za-z0-9_]*_?TOKEN\b)',
+    r'(\b[A-Za-z0-9_]*_?ID\b)',
+    r'(\b[A-Za-z0-9_]*_?PASSWORD\b)',
+    r'(\b[A-Za-z0-9_]*_?EMAIL\b)'
+]
+
+# Assignment regex: matches variable = "something" or 'something'
+ASSIGNMENT_REGEX = re.compile(r'^(\s*)(' + '|'.join(CRED_PATTERNS) + r')\s*=\s*["\\\']([^"\
+\']+)["\\\']', re.MULTILINE)
+
+# Notebook files to scan
+NOTEBOOKS = [
+    "SpotifyAPI-Student_Maria.ipynb",
+    "Spotify_API_Data_Analysis_Final_Project_Maria_Nyolcas.ipynb"
+]
+
+def fix_notebook(notebook_path):
+    print(f"🔧 Scanning: {notebook_path}")
+    with open(notebook_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    changes = []
+    suspicious = []
+
+    def repl(match):
+        indent, var, value = match.groups()
+        env_var = var.upper()
+        # Remove any leading underscores or digits
+        env_var = re.sub(r'^_*', '', env_var)
+        # Replace with os.getenv
+        new_line = f'{indent}{var} = os.getenv("{env_var}")'
+        changes.append((var, value))
+        return new_line
+
+    new_content, n = ASSIGNMENT_REGEX.subn(repl, content)
+
+    # Optionally, scan for suspicious assignments (not replaced)
+    for pat in CRED_PATTERNS:
+        for m in re.finditer(pat + r'\s*=\s*', content):
+            var = m.group(1)
+            if var not in [c[0] for c in changes]:
+                suspicious.append(var)
+
+    # Add dotenv import if needed
+    if n > 0 and 'from dotenv import load_dotenv' not in new_content:
+        if 'import os' in new_content:
+            new_content = new_content.replace(
+                'import os',
+                'import os\nfrom dotenv import load_dotenv\n\n# Load environment variables\nload_dotenv()'
+            )
+        else:
+            new_content = 'import os\nfrom dotenv import load_dotenv\n\n# Load environment variables\nload_dotenv()\n\n' + new_content
+
+    if n > 0:
+        with open(notebook_path, 'w', encoding='utf-8') as f:
+            f.write(new_content)
+        print(f"Replaced {n} credential assignments with os.getenv.")
+        for var, value in changes:
+            print(f"      - {var} (was: {value})")
+    else:
+        print("No hardcoded credentials found.")
+
+    if suspicious:
+        print("Suspicious assignments for manual review:")
+        for var in set(suspicious):
+            print(f"      - {var}")
+
+def main():
+    print("🔒 Generic API Key Fix Script\n" + "="*40)
+    for nb in NOTEBOOKS:
+        try:
+            fix_notebook(nb)
+        except FileNotFoundError:
+            print(f"File not found: {nb}")
+        except Exception as e:
+            print(f"Error fixing {nb}: {e}")
+    print("\nDone. Review output above for any manual actions needed.")
+
+if __name__ == "__main__":
+    main() 
